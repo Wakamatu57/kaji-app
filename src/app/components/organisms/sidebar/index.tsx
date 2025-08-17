@@ -26,7 +26,7 @@ export default function Sidebar() {
 
       {/* オーバーレイ */}
       <div
-        className={`fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity md:hidden ${
+        className={`fixed inset-0 bg-black/40 z-40 transition-opacity md:hidden ${
           isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
         onClick={() => setIsOpen(false)}
