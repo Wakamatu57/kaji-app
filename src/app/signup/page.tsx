@@ -11,10 +11,11 @@ export default function SignupPage() {
   const [groupOption, setGroupOption] = useState<'join' | 'create'>('join');
   const [groupName, setGroupName] = useState('');
   const [groupPassword, setGroupPassword] = useState('');
+  const [isAgreed, setIsAgreed] = useState(false);
 
   const register = async () => {
     // モック処理
-    if (!username || !email || !password || !groupName || !groupPassword) {
+    if (!username || !email || !password || !groupName || !groupPassword || !isAgreed) {
       alert('すべて入力してください');
       return;
     }
@@ -39,6 +40,8 @@ export default function SignupPage() {
       setGroupName={setGroupName}
       groupPassword={groupPassword}
       setGroupPassword={setGroupPassword}
+      isAgreed={isAgreed}
+      setIsAgreed={setIsAgreed}
       onSubmit={register}
     />
   );

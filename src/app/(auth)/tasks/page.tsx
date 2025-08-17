@@ -12,7 +12,6 @@ export default function TasksPage() {
   ]);
   const [taskName, setTaskName] = useState('');
   const [category, setCategory] = useState('料理');
-  const [points, setPoints] = useState(1);
   const [currentUser, setCurrentUser] = useState<string | null>(null);
 
   useEffect(() => {
