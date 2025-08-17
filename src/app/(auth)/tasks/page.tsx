@@ -16,9 +16,7 @@ export default function TasksPage() {
 
   useEffect(() => {
     const username = localStorage.getItem('username');
-    if (!username) {
-      router.push('/');
-    } else {
+    if (username) {
       setCurrentUser(username);
     }
   }, [router]);
