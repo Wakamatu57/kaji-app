@@ -32,7 +32,7 @@ export default function TasksList({
   onEditTask,
 }: TasksListProps) {
   return (
-    <div className="min-h-screen bg-gray-100 p-4 flex flex-col gap-4">
+    <div className="min-h-screen p-4 flex flex-col gap-4">
       {/* タスク追加フォーム */}
       <form className="flex flex-wrap gap-2 bg-white p-4 rounded shadow" onSubmit={onAddTask}>
         <input
