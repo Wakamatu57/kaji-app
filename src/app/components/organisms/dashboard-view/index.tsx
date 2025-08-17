@@ -40,7 +40,7 @@ export default function DashboardView({ tasks, filterMonth, setFilterMonth }: Da
   });
 
   return (
-    <div className="min-h-screen p-4 flex flex-col gap-4">
+    <div className="p-4 flex flex-col gap-4">
       {/* 月フィルタ */}
       <div className="bg-white p-4 rounded shadow flex gap-2 items-center">
         <label htmlFor="filterMonth">表示月:</label>
