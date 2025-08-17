@@ -14,6 +14,15 @@ export default function TasksPage() {
   const [category, setCategory] = useState('料理');
   const [currentUser, setCurrentUser] = useState<string | null>(null);
 
+  const handleDeleteTask = (id: number) => {
+    setTasks(tasks.filter((task) => task.id !== id));
+    // ToDo ここでサーバーに削除リクエストを送る
+  };
+  const handleEditTask = (id: number, name: string, category: string) => {
+    setTasks(tasks.map((task) => (task.id === id ? { ...task, name, category } : task)));
+    // ToDo ここでサーバーに更新リクエストを送る
+  };
+
   useEffect(() => {
     const username = localStorage.getItem('username');
     if (username) {
@@ -33,6 +42,7 @@ export default function TasksPage() {
       userName: currentUser,
     };
     setTasks([...tasks, newTask]);
+    // ToDo ここでサーバーに追加リクエストを送る
     setTaskName('');
   };
 
@@ -46,6 +56,8 @@ export default function TasksPage() {
       category={category}
       setCategory={setCategory}
       onAddTask={addTask}
+      onDeleteTask={handleDeleteTask}
+      onEditTask={handleEditTask}
     />
   );
 }

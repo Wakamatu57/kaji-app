@@ -17,6 +17,8 @@ interface TasksListProps {
   category: string;
   setCategory: (v: string) => void;
   onAddTask: (e: React.FormEvent) => void;
+  onDeleteTask: (id: number) => void;
+  onEditTask: (id: number, name: string, category: string) => void;
 }
 
 export default function TasksList({
@@ -26,6 +28,8 @@ export default function TasksList({
   category,
   setCategory,
   onAddTask,
+  onDeleteTask,
+  onEditTask,
 }: TasksListProps) {
   return (
     <div className="min-h-screen bg-gray-100 p-4 flex flex-col gap-4">
@@ -57,7 +61,7 @@ export default function TasksList({
       {/* タスク一覧 */}
       <div className="flex flex-wrap gap-4">
         {tasks.map((task) => (
-          <TaskCard task={task} key={task.id} />
+          <TaskCard task={task} key={task.id} onDeleteTask={onDeleteTask} onEditTask={onEditTask} />
         ))}
       </div>
     </div>
