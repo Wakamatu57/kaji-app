@@ -52,20 +52,20 @@ export default function Sidebar() {
         {/* ナビリンク */}
         <nav className="flex flex-col flex-1 mt-4 gap-2 px-2">
           <Link
-            href="/dashboard"
-            className={`px-4 py-2 rounded hover:bg-gray-300 ${
-              pathname === '/dashboard' ? 'bg-gray-500 text-white' : 'text-gray-800'
-            }`}
-          >
-            ダッシュボード
-          </Link>
-          <Link
             href="/tasks"
             className={`px-4 py-2 rounded hover:bg-gray-300 ${
               pathname === '/tasks' ? 'bg-gray-500 text-white' : 'text-gray-800'
             }`}
           >
             タスク一覧
+          </Link>
+          <Link
+            href="/dashboard"
+            className={`px-4 py-2 rounded hover:bg-gray-300 ${
+              pathname === '/dashboard' ? 'bg-gray-500 text-white' : 'text-gray-800'
+            }`}
+          >
+            ダッシュボード
           </Link>
           <div className="flex-1" /> {/* 下まで伸ばす用 */}
           <button
