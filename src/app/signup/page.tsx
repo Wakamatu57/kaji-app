@@ -1,14 +1,17 @@
 'use client';
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import SignupForm from '@/components/organisms/signup-form';
+import { useLoading } from '@/context/loading-context';
 
 export default function SignupPage() {
   const router = useRouter();
+  const { showLoading, hideLoading } = useLoading();
   const register = async () => {
+    showLoading();
+    // Todo: ここでサーバーに登録リクエストを送る処理を実装する
     setTimeout(() => {
-      alert('登録成功！（モック）');
       router.push('/');
+      hideLoading();
     }, 1000);
   };
 
