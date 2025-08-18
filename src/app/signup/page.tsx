@@ -9,6 +9,7 @@ export default function SignupPage() {
   const { showLoading, hideLoading } = useLoading();
   const register = async (data: FormValues) => {
     try {
+      showLoading();
       await signup({
         username: data.username,
         email: data.email,

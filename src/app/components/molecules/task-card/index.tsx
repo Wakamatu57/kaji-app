@@ -10,24 +10,24 @@ interface TaskCardProps {
 export function TaskCard({ task, onEditTask, onDeleteTask }: TaskCardProps) {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [editName, setEditName] = useState(task.name);
+  const [editName, setEditName] = useState(task.title);
   const [editCategory, setEditCategory] = useState(task.category);
 
   const handleEditSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onEditTask(task.id, editName, editCategory);
+    onEditTask(task.taskId, editName, editCategory);
     setIsEditModalOpen(false);
   };
 
   const handleDelete = () => {
-    onDeleteTask(task.id);
+    onDeleteTask(task.taskId);
     setIsDeleteModalOpen(false);
   };
 
   return (
     <>
       <div className="bg-white p-4 rounded shadow flex-1 min-w-[200px]">
-        <h3 className="text-lg font-bold">{task.name}</h3>
+        <h3 className="text-lg font-bold">{task.title}</h3>
         <p>カテゴリ: {task.category}</p>
         <p>日付: {task.date}</p>
         <p>実施者: {task.userName}</p>
@@ -91,7 +91,7 @@ export function TaskCard({ task, onEditTask, onDeleteTask }: TaskCardProps) {
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded shadow w-full max-w-xs">
             <h2 className="text-lg font-bold mb-4 text-red-600">削除確認</h2>
-            <p className="mb-4">「{task.name}」を削除しますか？この操作は元に戻せません。</p>
+            <p className="mb-4">「{task.title}」を削除しますか？この操作は元に戻せません。</p>
             <div className="flex gap-2 justify-end">
               <button
                 type="button"

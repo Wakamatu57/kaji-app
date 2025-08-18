@@ -6,8 +6,9 @@ import type { Task } from '@/components/organisms/tasks-list';
 import { useLocalStorage } from '@/hooks/uselocalStorage';
 import { LOCAL_STORAGE_KEYS } from '@/lib/localStorageKeys';
 import { get } from 'http';
-import { getTasks } from '@/services';
+import { getTasks, addTaskApi, updateTask, deleteTask } from '@/services';
 import { set } from 'react-hook-form';
+import { useLoading } from '@/context/loading-context';
 
 export default function TasksPage() {
   const router = useRouter();
@@ -18,45 +19,69 @@ export default function TasksPage() {
 
   const [username, setUsername, removeUsername] = useLocalStorage(LOCAL_STORAGE_KEYS.USERNAME, '');
 
+  const { showLoading, hideLoading } = useLoading();
+  const fetchTasks = async () => {
+    try {
+      showLoading();
+      const tasks: Task[] = await getTasks();
+      setTasks(tasks);
+    } catch (err) {
+      console.error('タスク取得失敗', err);
+      alert('タスクの取得に失敗しました。');
+    } finally {
+      hideLoading();
+    }
+  };
+
   useEffect(() => {
     if (username) {
       setCurrentUser(username);
     }
-    const fetchTasks = async () => {
-      try {
-        const tasks: Task[] = await getTasks();
-        setTasks(tasks);
-      } catch (err) {
-        console.error('タスク取得失敗', err);
-        alert('タスクの取得に失敗しました。');
-      }
-    };
 
     fetchTasks();
   }, []);
 
-  const handleDeleteTask = (id: number) => {
-    // setTasks(tasks.filter((task) => task.id !== id));
-    // ToDo ここでサーバーに削除リクエストを送る
+  const handleDeleteTask = (taskId: number) => {
+    showLoading();
+    try {
+      deleteTask({ taskId });
+    } catch (err) {
+      console.error('タスク削除失敗', err);
+      alert('タスクの削除に失敗しました。');
+    } finally {
+      hideLoading();
+    }
+
+    fetchTasks();
   };
-  const handleEditTask = (id: number, name: string, category: string) => {
-    // setTasks(tasks.map((task) => (task.id === id ? { ...task, name, category } : task)));
-    // ToDo ここでサーバーに更新リクエストを送る
+
+  const handleEditTask = (taskId: number, title: string, category: string) => {
+    showLoading();
+    try {
+      updateTask({ taskId, title, category });
+    } catch (err) {
+      console.error('タスク更新失敗', err);
+      alert('タスクの更新に失敗しました。');
+    } finally {
+      hideLoading();
+    }
+
+    fetchTasks();
   };
 
   const addTask = (e: React.FormEvent) => {
-    // e.preventDefault();
-    // if (!currentUser) return;
-    // const newTask: Task = {
-    //   id: tasks.length + 1,
-    //   name: taskName,
-    //   category,
-    //   date: new Date().toISOString().split('T')[0],
-    //   userName: currentUser,
-    // };
-    // setTasks([...tasks, newTask]);
-    // // ToDo ここでサーバーに追加リクエストを送る
-    // setTaskName('');
+    showLoading();
+    e.preventDefault();
+    try {
+      addTaskApi({ title: taskName, category });
+    } catch (err) {
+      console.error('タスク追加失敗', err);
+      alert('タスクの追加に失敗しました。');
+    } finally {
+      hideLoading();
+    }
+
+    fetchTasks();
   };
 
   if (!currentUser) return null;

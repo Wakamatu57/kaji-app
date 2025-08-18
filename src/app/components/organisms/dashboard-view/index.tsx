@@ -1,14 +1,7 @@
 'use client';
 
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
-
-type Task = {
-  id: number;
-  name: string;
-  category: string;
-  date: string; // YYYY-MM-DD
-  userName: string;
-};
+import { Task } from '@/components/organisms/tasks-list';
 
 interface DashboardViewProps {
   tasks: Task[];

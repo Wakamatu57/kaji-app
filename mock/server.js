@@ -78,13 +78,13 @@ app.post('/api/tasks', (req, res) => {
 });
 
 // タスク更新
-app.post('/api//tasks/update', (req, res) => {
+app.post('/api/tasks/update', (req, res) => {
   res.status(200).json({});
 });
 
 // タスク削除
 app.post('/api/tasks/delete', (req, res) => {
-  res.status(204).send();
+  res.status(200).json({});
 });
 
 // ------------------------
