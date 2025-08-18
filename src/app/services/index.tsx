@@ -1,3 +1,6 @@
+import { Task } from '@/components/organisms/tasks-list';
+import { GetTaskRequest } from '@/models/get-task-request';
+import { GetTaskResponse } from '@/models/get-task-response';
 import { SigninRequest } from '@/models/siginin-request';
 import { SigninResponse } from '@/models/siginin-response';
 import { SignupRequest } from '@/models/siginup-request';
@@ -26,6 +29,7 @@ export function signin(data: SigninRequest): Promise<SigninResponse> {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
+    credentials: 'include',
   });
 }
 
@@ -37,10 +41,13 @@ export function logout() {
 }
 
 // タスク一覧取得
-export function getTasks(session: string, email: string) {
+export function getTasks(): Promise<Task[]> {
   return fetcher(`${API_BASE}/tasks`, {
     method: 'GET',
-    headers: { session, email },
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
   });
 }
 

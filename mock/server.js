@@ -5,8 +5,12 @@ const cors = require('cors');
 const app = express();
 const port = 5500;
 
-// ミドルウェア
-app.use(cors());
+const corsOptions = {
+  origin: 'http://localhost:3000', // フロントのオリジン
+  credentials: true, // Cookie を許可
+};
+
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
 // ------------------------
@@ -21,7 +25,7 @@ app.post('/api/auth/login', (req, res) => {
   if (!email || !password) return res.status(400).json({ error: 'メールとパスワード必須' });
 
   // セッションをヘッダで返す
-  res.setHeader('Set-Cookie', 'session=abcdef123456; HttpOnly; Secure; Path=/; SameSite=Strict');
+  res.setHeader('Set-Cookie', 'session=abcdef123456; Path=/; SameSite=Strict');
 
   // ボディには username だけ返す
   res.status(200).json({ username: 'テストユーザー' });
@@ -47,9 +51,23 @@ app.get('/api/tasks', (req, res) => {
     {
       taskId: '1',
       title: '皿洗い',
-      category: 'キッチン',
+      category: 'その他',
       date: '2025-08-18',
       userName: 'たろう',
+    },
+    {
+      taskId: '2',
+      title: '買い物',
+      category: '買い物',
+      date: '2025-08-19',
+      userName: 'じろう',
+    },
+    {
+      taskId: '3',
+      title: '掃除',
+      category: '掃除',
+      date: '2025-08-20',
+      userName: 'はなこ',
     },
   ]);
 });

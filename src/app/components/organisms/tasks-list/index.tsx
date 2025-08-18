@@ -3,8 +3,8 @@
 import { TaskCard } from '@/components/molecules/task-card';
 
 export type Task = {
-  id: number;
-  name: string;
+  taskId: number;
+  title: string;
   category: string;
   date: string;
   userName: string;
@@ -61,7 +61,12 @@ export default function TasksList({
       {/* タスク一覧 */}
       <div className="flex flex-wrap gap-4">
         {tasks.map((task) => (
-          <TaskCard task={task} key={task.id} onDeleteTask={onDeleteTask} onEditTask={onEditTask} />
+          <TaskCard
+            task={task}
+            key={task.taskId}
+            onDeleteTask={onDeleteTask}
+            onEditTask={onEditTask}
+          />
         ))}
       </div>
     </div>

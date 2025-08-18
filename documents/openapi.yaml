@@ -216,7 +216,7 @@ components:
       type: object
       properties:
         taskId:
-          type: string
+          type: integer
         title:
           type: string
         category:
