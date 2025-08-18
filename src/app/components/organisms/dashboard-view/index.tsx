@@ -71,7 +71,7 @@ export default function DashboardView({ tasks, filterMonth, setFilterMonth }: Da
         </ul>
 
         {/* 積み上げ棒グラフ */}
-        <ResponsiveContainer width="100%" height={350}>
+        <ResponsiveContainer width="100%" height={450}>
           <BarChart data={chartData}>
             <XAxis dataKey="userName" />
             <YAxis />
