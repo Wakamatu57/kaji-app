@@ -1,7 +1,9 @@
+'use client';
+
 import React from 'react';
 
 type HeaderProps = {
-  userName: string;
+  userName: string | null;
 };
 
 const Header = ({ userName }: HeaderProps) => {

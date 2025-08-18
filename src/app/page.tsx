@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import LoginForm from '@/components/organisms/login-form';
 import { useLoading } from '@/context/loading-context';
+import { LOCAL_STORAGE_KEYS } from '@/lib/localStorageKeys';
+import { useLocalStorage } from '@/hooks/uselocalStorage';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -10,6 +12,9 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const { showLoading, hideLoading } = useLoading();
+
+  const [username, setUsername, removeUsername] = useLocalStorage(LOCAL_STORAGE_KEYS.USERNAME, '');
+  const [usermail, setUsermail, removeUsermail] = useLocalStorage(LOCAL_STORAGE_KEYS.USERMAIL, '');
 
   const login = async () => {
     showLoading();
@@ -21,7 +26,8 @@ export default function LoginPage() {
 
     // Todo: ここでサーバーにログインリクエストを送る処理を実装する
     setTimeout(() => {
-      localStorage.setItem('username', email);
+      setUsername('ゲスト');
+      setUsermail(email);
       router.push('/tasks');
       hideLoading();
     }, 1000);

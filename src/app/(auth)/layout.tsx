@@ -4,22 +4,24 @@ import Sidebar from '@/components/organisms/sidebar';
 import Header from '@/components/organisms/header';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useLocalStorage } from '@/hooks/uselocalStorage';
+import { LOCAL_STORAGE_KEYS } from '@/lib/localStorageKeys';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const [currentUser, setCurrentUser] = useState<string | null>(null);
+  const [username, setUsername, removeUsername] = useLocalStorage(LOCAL_STORAGE_KEYS.USERNAME, '');
+
   useEffect(() => {
-    const username = localStorage.getItem('username');
     if (username) {
       setCurrentUser(username);
     } else {
-      // ログインしていない場合はログインページへリダイレクト
-      router.push('/login');
+      router.push('/');
     }
   }, []);
   return (
     <>
-      <Header userName={currentUser || ''} />
+      <Header userName={currentUser} />
       <div className="flex bg-gray-100" style={{ height: 'calc(100vh - 80px)' }}>
         <Sidebar />
         <main className="flex-1 overflow-auto">{children}</main>
