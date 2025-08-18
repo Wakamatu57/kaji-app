@@ -41,10 +41,10 @@ export default function TasksPage() {
     fetchTasks();
   }, []);
 
-  const handleDeleteTask = (taskId: number) => {
+  const handleDeleteTask = async (taskId: number) => {
     showLoading();
     try {
-      deleteTask({ taskId });
+      await deleteTask({ taskId });
     } catch (err) {
       console.error('タスク削除失敗', err);
       alert('タスクの削除に失敗しました。');
@@ -52,13 +52,13 @@ export default function TasksPage() {
       hideLoading();
     }
 
-    fetchTasks();
+    await fetchTasks();
   };
 
-  const handleEditTask = (taskId: number, title: string, category: string) => {
+  const handleEditTask = async (taskId: number, title: string, category: string) => {
     showLoading();
     try {
-      updateTask({ taskId, title, category });
+      await updateTask({ taskId, title, category });
     } catch (err) {
       console.error('タスク更新失敗', err);
       alert('タスクの更新に失敗しました。');
@@ -66,14 +66,14 @@ export default function TasksPage() {
       hideLoading();
     }
 
-    fetchTasks();
+    await fetchTasks();
   };
 
-  const addTask = (e: React.FormEvent) => {
+  const addTask = async (e: React.FormEvent) => {
     showLoading();
     e.preventDefault();
     try {
-      addTaskApi({ title: taskName, category });
+      await addTaskApi({ title: taskName, category });
     } catch (err) {
       console.error('タスク追加失敗', err);
       alert('タスクの追加に失敗しました。');
@@ -81,7 +81,7 @@ export default function TasksPage() {
       hideLoading();
     }
 
-    fetchTasks();
+    await fetchTasks();
   };
 
   if (!currentUser) return null;

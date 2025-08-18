@@ -80,11 +80,13 @@ app.post('/api/tasks', (req, res) => {
 // タスク更新
 app.post('/api/tasks/update', (req, res) => {
   res.status(200).json({});
+  // res.status(500).json({ error: 'タスク更新はサポートされていません' });
 });
 
 // タスク削除
 app.post('/api/tasks/delete', (req, res) => {
   res.status(200).json({});
+  // res.status(500).json({ error: 'タスク削除はサポートされていません' });
 });
 
 // ------------------------
