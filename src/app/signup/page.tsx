@@ -1,18 +1,28 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import SignupForm from '@/components/organisms/signup-form';
+import SignupForm, { FormValues } from '@/components/organisms/signup-form';
 import { useLoading } from '@/context/loading-context';
+import { signup } from '@/services';
 
 export default function SignupPage() {
   const router = useRouter();
   const { showLoading, hideLoading } = useLoading();
-  const register = async () => {
-    showLoading();
-    // Todo: ここでサーバーに登録リクエストを送る処理を実装する
-    setTimeout(() => {
-      router.push('/');
+  const register = async (data: FormValues) => {
+    try {
+      await signup({
+        username: data.username,
+        email: data.email,
+        password: data.password,
+        groupName: data.groupName,
+        groupPassword: data.groupPassword,
+      });
+      router.push('/tasks');
+    } catch (err) {
+      console.error(err);
+      alert('登録に失敗しました。もう一度お試しください。');
+    } finally {
       hideLoading();
-    }, 1000);
+    }
   };
 
   return <SignupForm onSubmit={register} />;

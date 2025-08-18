@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 
-type FormValues = {
+export type FormValues = {
   username: string;
   email: string;
   password: string;

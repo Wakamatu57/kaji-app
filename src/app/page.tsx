@@ -5,6 +5,7 @@ import LoginForm from '@/components/organisms/login-form';
 import { useLoading } from '@/context/loading-context';
 import { LOCAL_STORAGE_KEYS } from '@/lib/localStorageKeys';
 import { useLocalStorage } from '@/hooks/uselocalStorage';
+import { signin } from '@/services';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -23,14 +24,18 @@ export default function LoginPage() {
       hideLoading();
       return;
     }
+    try {
+      const response = await signin({ email: email, password: password });
 
-    // Todo: ここでサーバーにログインリクエストを送る処理を実装する
-    setTimeout(() => {
-      setUsername('ゲスト');
+      setUsername(response.username);
       setUsermail(email);
       router.push('/tasks');
+    } catch (error) {
+      console.error('Login failed:', error);
+      setErrorMsg('ログインに失敗しました。もう一度お試しください。');
+    } finally {
       hideLoading();
-    }, 1000);
+    }
   };
 
   return (

@@ -57,6 +57,20 @@ paths:
       responses:
         '200':
           description: ログイン成功
+          headers:
+            Set-Cookie:
+              description: セッションIDを含むクッキー
+              schema:
+                type: string
+                example: session=abcdef123456; HttpOnly; Secure; Path=/; SameSite=Strict
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  username:
+                    type: string
+                    description: ログインしたユーザー名
         '401':
           description: 認証失敗
 
