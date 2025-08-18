@@ -201,7 +201,7 @@ components:
     Task:
       type: object
       properties:
-        id:
+        taskId:
           type: string
         title:
           type: string
@@ -210,6 +210,4 @@ components:
         date:
           type: string
         userName:
-          type: string
-        groupId:
           type: string
