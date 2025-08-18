@@ -1,0 +1,215 @@
+openapi: 3.0.3
+info:
+  title: 家事やってますアピールアプリ API
+  version: 1.0.0
+servers:
+  - url: https://api.example.com
+paths:
+  /auth/signup:
+    post:
+      summary: 新規登録
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                groupName:
+                  type: string
+                groupPassword:
+                  type: string
+              required:
+                - username
+                - email
+                - password
+                - groupName
+                - groupPassword
+      responses:
+        '201':
+          description: 登録成功
+        '400':
+          description: 入力エラー
+
+  /auth/login:
+    post:
+      summary: ログイン
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+              required:
+                - email
+                - password
+      responses:
+        '200':
+          description: ログイン成功
+        '401':
+          description: 認証失敗
+
+  /auth/logout:
+    post:
+      summary: ログアウト
+      parameters:
+        - in: header
+          name: session
+          schema:
+            type: string
+          required: true
+          description: セッション情報
+      responses:
+        '204':
+          description: ログアウト成功
+
+  /tasks:
+    get:
+      summary: タスク一覧取得
+      parameters:
+        - in: header
+          name: session
+          schema:
+            type: string
+          required: true
+          description: セッション情報
+        - in: header
+          name: email
+          schema:
+            type: string
+          required: true
+          description: ユーザーのメールアドレス
+      responses:
+        '200':
+          description: タスク一覧
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Task'
+    post:
+      summary: タスク追加
+      parameters:
+        - in: header
+          name: session
+          schema:
+            type: string
+          required: true
+          description: セッション情報
+        - in: header
+          name: email
+          schema:
+            type: string
+          required: true
+          description: ユーザーのメールアドレス
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                category:
+                  type: string
+              required:
+                - title
+                - category
+      responses:
+        '201':
+          description: タスク追加成功
+
+  /tasks/update:
+    post:
+      summary: タスク更新
+      parameters:
+        - in: header
+          name: session
+          schema:
+            type: string
+          required: true
+        - in: header
+          name: email
+          schema:
+            type: string
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                taskId:
+                  type: string
+                title:
+                  type: string
+                category:
+                  type: string
+              required:
+                - taskId
+                - title
+                - category
+      responses:
+        '200':
+          description: タスク更新成功
+
+  /tasks/delete:
+    post:
+      summary: タスク削除
+      parameters:
+        - in: header
+          name: session
+          schema:
+            type: string
+          required: true
+        - in: header
+          name: email
+          schema:
+            type: string
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                taskId:
+                  type: string
+              required:
+                - taskId
+      responses:
+        '204':
+          description: タスク削除成功
+
+components:
+  schemas:
+    Task:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        category:
+          type: string
+        date:
+          type: string
+        userName:
+          type: string
+        groupId:
+          type: string
