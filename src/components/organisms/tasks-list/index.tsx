@@ -1,6 +1,6 @@
 'use client';
 
-import { TaskCard } from '@/components/molecules/task-card';
+import { TaskCard } from '../../molecules/task-card';
 
 export type Task = {
   taskId: number;

@@ -1,6 +1,6 @@
 // context/LoadingContext.tsx
 'use client';
-import Spinner from '@/components/atoms/spiner';
+import Spinner from '../../components/atoms/spiner';
 import { createContext, useContext, useState, ReactNode } from 'react';
 
 interface LoadingContextType {

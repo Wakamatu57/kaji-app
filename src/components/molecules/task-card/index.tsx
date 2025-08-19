@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { Task } from '@/components/organisms/tasks-list';
+import type { Task } from '../../organisms/tasks-list';
 
 interface TaskCardProps {
   task: Task;

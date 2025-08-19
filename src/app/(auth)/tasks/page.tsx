@@ -5,9 +5,7 @@ import TasksList from '@/components/organisms/tasks-list';
 import type { Task } from '@/components/organisms/tasks-list';
 import { useLocalStorage } from '@/hooks/uselocalStorage';
 import { LOCAL_STORAGE_KEYS } from '@/lib/localStorageKeys';
-import { get } from 'http';
-import { getTasks, addTaskApi, updateTask, deleteTask } from '@/services';
-import { set } from 'react-hook-form';
+import { getTasks, addTaskApi, updateTask, deleteTask } from '../../../services';
 import { useLoading } from '@/context/loading-context';
 
 export default function TasksPage() {

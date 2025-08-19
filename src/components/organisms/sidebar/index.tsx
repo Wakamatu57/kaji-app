@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { useLocalStorage } from '@/hooks/uselocalStorage';
-import { LOCAL_STORAGE_KEYS } from '@/lib/localStorageKeys';
+import { useLocalStorage } from '../../../hooks/uselocalStorage';
+import { LOCAL_STORAGE_KEYS } from '../../../lib/localStorageKeys';
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);

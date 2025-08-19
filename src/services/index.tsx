@@ -1,12 +1,12 @@
-import { Task } from '@/components/organisms/tasks-list';
-import { AddTaskRequest } from '@/models/add-task-request';
-import { DeleteTaskRequest } from '@/models/delete-task-request';
-import { GetTaskRequest } from '@/models/get-task-request';
-import { GetTaskResponse } from '@/models/get-task-response';
-import { SigninRequest } from '@/models/siginin-request';
-import { SigninResponse } from '@/models/siginin-response';
-import { SignupRequest } from '@/models/siginup-request';
-import { UploadTaskRequest } from '@/models/upload-task-request';
+import { Task } from '../components/organisms/tasks-list';
+import { AddTaskRequest } from '../models/add-task-request';
+import { DeleteTaskRequest } from '../models/delete-task-request';
+import { GetTaskRequest } from '../models/get-task-request';
+import { GetTaskResponse } from '../models/get-task-response';
+import { SigninRequest } from '../models/siginin-request';
+import { SigninResponse } from '../models/siginin-response';
+import { SignupRequest } from '../models/siginup-request';
+import { UploadTaskRequest } from '../models/upload-task-request';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL;
 

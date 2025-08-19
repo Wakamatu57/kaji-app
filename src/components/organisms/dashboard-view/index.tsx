@@ -1,7 +1,7 @@
 'use client';
 
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
-import { Task } from '@/components/organisms/tasks-list';
+import { Task } from '../tasks-list';
 
 interface DashboardViewProps {
   tasks: Task[];
