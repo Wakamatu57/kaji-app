@@ -14,13 +14,15 @@ export default function SignupPage() {
         username: data.username,
         email: data.email,
         password: data.password,
+        groupOption: data.groupOption,
         groupName: data.groupName,
         groupPassword: data.groupPassword,
       });
-      router.push('/tasks');
+      router.push('/');
     } catch (err) {
-      console.error(err);
-      alert('登録に失敗しました。もう一度お試しください。');
+      const e = err as { message: string };
+      console.error(e);
+      alert(e.message || '登録に失敗しました。');
     } finally {
       hideLoading();
     }

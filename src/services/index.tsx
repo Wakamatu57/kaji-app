@@ -13,7 +13,11 @@ const API_BASE = process.env.NEXT_PUBLIC_API_URL;
 // 共通fetcher
 export async function fetcher<T>(url: string, options?: RequestInit): Promise<T> {
   const res = await fetch(url, options);
-  if (!res.ok) throw new Error(await res.text());
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.message || '不明なエラーが発生しました');
+  }
+
   return res.json();
 }
 

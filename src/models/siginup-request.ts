@@ -3,5 +3,6 @@ export interface SignupRequest {
   email: string;
   password: string;
   groupName: string;
+  groupOption: 'create' | 'join';
   groupPassword: string;
 }

@@ -1,0 +1,54 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { AuthService } from '@/application/services/AuthServie';
+import { SignupRequest } from '@/models/siginup-request';
+import { GroupRepository } from '@/infrastructure/GroupRepository';
+import { UserRepository } from '@/infrastructure/UserRepository';
+import { SupabaseClientWrapper } from '@/infrastructure/SupabaseClientWrapper';
+import { MockSupabaseClient } from '@/infrastructure/mock/mockSupabaseClientWrapper';
+import { MockGroupRepository } from '@/infrastructure/mock/mockGroupRepository';
+import { MockUserRepository } from '@/infrastructure/mock/mockUserRepository';
+
+export async function POST(req: NextRequest) {
+  try {
+    const body: SignupRequest = await req.json();
+
+    // const supabaseClient = new SupabaseClientWrapper();
+    // const groupRepo = new GroupRepository(supabaseClient);
+    // const userRepo = new UserRepository(supabaseClient);
+    const supabaseClient = new MockSupabaseClient();
+    const groupRepo = new MockGroupRepository();
+    const userRepo = new MockUserRepository();
+
+    const service = new AuthService(supabaseClient, groupRepo, userRepo);
+
+    const user = await service.signup(
+      body.username,
+      body.email,
+      body.password,
+      body.groupOption,
+      body.groupName,
+      body.groupPassword,
+    );
+
+    return NextResponse.json({ message: '登録成功', user }, { status: 201 });
+  } catch (err: any) {
+    console.error('Signup error:', err);
+    if (err.name === 'EmailAlreadyExistsError') {
+      return NextResponse.json(
+        { message: 'メールアドレスはすでに使用されています' },
+        { status: 400 },
+      );
+    }
+    if (err.name === 'GroupAlreadyExistsError') {
+      return NextResponse.json({ message: 'グループがすでに存在します' }, { status: 400 });
+    }
+    if (err.name === 'GroupNotFoundError') {
+      return NextResponse.json({ message: 'グループが存在しません' }, { status: 400 });
+    }
+
+    return NextResponse.json(
+      { message: 'グループ作成またはグループの参加に失敗しました' },
+      { status: 400 },
+    );
+  }
+}
