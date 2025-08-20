@@ -5,7 +5,7 @@ import { EmailAlreadyExistsError } from '@/utils/errors/EmailAlreadyExistsError'
 import { GroupAlreadyExistsError } from '@/utils/errors/GroupAlreadyExistsError';
 import { GroupNotFoundError } from '@/utils/errors/GroupNotFoundError';
 
-export class AuthService {
+export class SignupService {
   constructor(
     private supabase: ISupabaseClient,
     private groupRepo: IGroupRepository,

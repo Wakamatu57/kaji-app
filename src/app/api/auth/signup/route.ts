@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { AuthService } from '@/application/services/AuthServie';
+import { SignupService } from '@/application/services/SignupServie';
 import { SignupRequest } from '@/models/siginup-request';
 import { GroupRepository } from '@/infrastructure/GroupRepository';
 import { UserRepository } from '@/infrastructure/UserRepository';
@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
     const groupRepo = new MockGroupRepository();
     const userRepo = new MockUserRepository();
 
-    const service = new AuthService(supabaseClient, groupRepo, userRepo);
+    const service = new SignupService(supabaseClient, groupRepo, userRepo);
 
     const user = await service.signup(
       body.username,
