@@ -14,6 +14,8 @@ export async function POST(req: NextRequest) {
 
     const isDev = process.env.NODE_ENV === 'development';
 
+    console.log('Signup request body:', body);
+
     const supabaseClient = isDev ? new MockSupabaseClient() : new SupabaseClientWrapper();
     const userRepo = isDev ? new MockUserRepository() : new UserRepository();
     const groupRepo = isDev ? new MockGroupRepository() : new GroupRepository();
