@@ -15,6 +15,7 @@ export class CreateTaskService {
     const user = await this.userRepo.findById(sessionUser.data.user.id);
     if (!user) throw new Error('ユーザーが見つかりません');
 
-    return this.taskRepo.create(user.userId, user.groupId, title, category);
+    const date = new Date().toISOString().split('T')[0];
+    return this.taskRepo.create(user.userId, title, category, date);
   }
 }

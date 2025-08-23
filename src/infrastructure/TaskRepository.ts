@@ -36,10 +36,10 @@ export class TaskRepository implements ITaskRepository {
     );
   }
 
-  async create(userId: string, groupId: number, title: string, category: string): Promise<Task> {
+  async create(userId: string, title: string, category: string, date: string): Promise<Task> {
     const { data, error } = await this.client
       .from('tasks')
-      .insert([{ user_id: userId, group_id: groupId, title, category }])
+      .insert([{ user_id: userId, title, category, date }])
       .select()
       .single();
 

@@ -20,7 +20,6 @@ TASKS {
   string category "カテゴリ"
   datetime date "作成日時"
   string user_id FK "実施者ユーザーID"
-  string group_id FK "グループID"
 }
 
 USERS ||--o| GROUPS : "所属"
