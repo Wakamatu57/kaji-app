@@ -27,14 +27,21 @@ export class MockTaskRepository implements ITaskRepository {
     return task;
   }
 
-  //   async update(task: Task): Promise<Task> {
-  //     const index = this.tasks.findIndex((t) => t.taskId === task.taskId);
-  //     if (index === -1) throw new Error('Task not found');
-  //     this.tasks[index] = task;
-  //     return task;
-  //   }
+  async update(taskId: number, title: string, category: string): Promise<Task> {
+    const index = this.tasks.findIndex((t) => t.taskId === taskId);
+    if (index === -1) throw new Error('Task not found');
+    const addedTask = new Task(
+      taskId,
+      title,
+      category,
+      this.tasks[index].date,
+      this.tasks[index].userName,
+    );
+    this.tasks[index] = addedTask;
+    return addedTask;
+  }
 
-  //   async delete(taskId: string): Promise<void> {
-  //     this.tasks = this.tasks.filter((t) => t.taskId !== taskId);
-  //   }
+  async delete(taskId: number): Promise<void> {
+    this.tasks = this.tasks.filter((t) => t.taskId !== taskId);
+  }
 }

@@ -46,4 +46,21 @@ export class TaskRepository implements ITaskRepository {
     if (error) throw error;
     return Task.fromRecord(data);
   }
+
+  async update(taskId: number, title: string, category: string): Promise<Task> {
+    const { data, error } = await this.client
+      .from('tasks')
+      .update({ title, category })
+      .eq('task_id', taskId)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return Task.fromRecord(data);
+  }
+
+  async delete(taskId: number): Promise<void> {
+    const { error } = await this.client.from('tasks').delete().eq('task_id', taskId);
+    if (error) throw error;
+  }
 }
