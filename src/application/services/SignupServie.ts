@@ -25,7 +25,10 @@ export class SignupService {
       password,
       email_confirm: true,
     });
-    if (authError || !authUser?.user) throw new EmailAlreadyExistsError(email);
+    if (authError || !authUser?.user) {
+      console.error('Supabase user creation error:', authError);
+      throw new EmailAlreadyExistsError(email);
+    }
 
     try {
       let group = await this.groupRepo.findByName(groupName);
