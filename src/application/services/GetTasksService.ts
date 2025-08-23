@@ -18,7 +18,12 @@ export class GetTasksService {
       const user = await this.userRepo.findById(sessionUser.data.user.id);
       if (!user) throw new Error('ユーザーが見つかりません。');
 
-      return this.taskRepo.findByGroupId(user.groupId);
+      // 同じグループに属するユーザー一覧を取得
+      const groupUsers = await this.userRepo.findByGroupId(user.groupId);
+      const userIds = groupUsers.map((u) => u.userId);
+
+      // ユーザーID一覧からタスク取得
+      return this.taskRepo.findByUserIds(userIds);
     } catch {
       throw new Error('タスクの取得に失敗しました。');
     }

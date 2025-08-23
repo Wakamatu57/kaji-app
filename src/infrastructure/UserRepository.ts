@@ -34,4 +34,12 @@ export class UserRepository implements IUserRepository {
 
     return User.fromRecord(data);
   }
+
+  async findByGroupId(groupId: number): Promise<User[]> {
+    const { data, error } = await this.client.from('users').select('*').eq('group_id', groupId);
+
+    if (error) throw error;
+
+    return (data ?? []).map((record: any) => User.fromRecord(record));
+  }
 }

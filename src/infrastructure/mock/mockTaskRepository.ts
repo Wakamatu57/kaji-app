@@ -8,7 +8,7 @@ export class MockTaskRepository implements ITaskRepository {
     new Task(2, '買い物', '買い物', '2025-08-07', '花子'),
   ];
 
-  async findByGroupId(groupId: number): Promise<Task[]> {
+  async findByUserIds(userIds: string[]): Promise<Task[]> {
     // グループごとの絞り込みは無視して全タスク返す（モックなので）
     return this.tasks;
   }

@@ -63,4 +63,32 @@ export class TaskRepository implements ITaskRepository {
     const { error } = await this.client.from('tasks').delete().eq('task_id', taskId);
     if (error) throw error;
   }
+
+  async findByUserIds(userIds: string[]): Promise<Task[]> {
+    const { data, error } = await this.client
+      .from('tasks')
+      .select(
+        `
+        task_id,
+        title,
+        category,
+        date,
+        user_id,
+        users(username)
+      `,
+      )
+      .in('user_id', userIds);
+
+    if (error) throw error;
+
+    return (data ?? []).map((record: any) =>
+      Task.fromRecord({
+        task_id: record.task_id,
+        title: record.title,
+        category: record.category,
+        date: record.date,
+        userName: record.users?.username ?? '',
+      }),
+    );
+  }
 }
