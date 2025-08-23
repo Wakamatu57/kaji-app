@@ -8,6 +8,8 @@ export class SupabaseClientWrapper implements ISupabaseClient {
   private client: SupabaseClient;
 
   constructor() {
+    console.log('Supabase URL:', supabaseUrl);
+    console.log('Supabase Key:', supabaseKey);
     this.client = createClient(supabaseUrl, supabaseKey);
   }
 
