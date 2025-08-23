@@ -9,12 +9,11 @@ import { MockUserRepository } from '@/infrastructure/mock/mockUserRepository';
 import { MockTaskRepository } from '@/infrastructure/mock/mockTaskRepository';
 import { CreateTaskService } from '@/application/services/CreateTaskService';
 
-// const supabaseClient = new SupabaseClientWrapper();
-// const taskRepository = new TaskRepository();
-// const userRepository = new UserRepository();
-const supabaseClient = new MockSupabaseClient();
-const taskRepository = new MockTaskRepository();
-const userRepository = new MockUserRepository();
+const isDev = process.env.NODE_ENV === 'development';
+
+const supabaseClient = isDev ? new MockSupabaseClient() : new SupabaseClientWrapper();
+const taskRepository = isDev ? new MockTaskRepository() : new TaskRepository();
+const userRepository = isDev ? new MockUserRepository() : new UserRepository();
 
 export async function GET(req: NextRequest) {
   try {

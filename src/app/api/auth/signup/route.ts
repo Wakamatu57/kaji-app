@@ -12,12 +12,11 @@ export async function POST(req: NextRequest) {
   try {
     const body: SignupRequest = await req.json();
 
-    // const supabaseClient = new SupabaseClientWrapper();
-    // const groupRepo = new GroupRepository();
-    // const userRepo = new UserRepository();
-    const supabaseClient = new MockSupabaseClient();
-    const groupRepo = new MockGroupRepository();
-    const userRepo = new MockUserRepository();
+    const isDev = process.env.NODE_ENV === 'development';
+
+    const supabaseClient = isDev ? new MockSupabaseClient() : new SupabaseClientWrapper();
+    const userRepo = isDev ? new MockUserRepository() : new UserRepository();
+    const groupRepo = isDev ? new MockGroupRepository() : new GroupRepository();
 
     const service = new SignupService(supabaseClient, groupRepo, userRepo);
 

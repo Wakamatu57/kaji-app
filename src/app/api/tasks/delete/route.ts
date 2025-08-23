@@ -12,10 +12,10 @@ export async function POST(req: NextRequest) {
 
     const { taskId } = await req.json();
 
-    // const supabaseClient = new SupabaseClientWrapper();
-    // const taskRepository = new TaskRepository();
-    const supabaseClient = new MockSupabaseClient();
-    const taskRepository = new MockTaskRepository();
+    const isDev = process.env.NODE_ENV === 'development';
+
+    const supabaseClient = isDev ? new MockSupabaseClient() : new SupabaseClientWrapper();
+    const taskRepository = isDev ? new MockTaskRepository() : new TaskRepository();
 
     const service = new DeleteTaskService(supabaseClient, taskRepository);
 

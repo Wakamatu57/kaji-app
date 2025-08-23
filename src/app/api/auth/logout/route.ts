@@ -8,10 +8,11 @@ import { MockUserRepository } from '@/infrastructure/mock/mockUserRepository';
 
 export async function POST(req: NextRequest) {
   try {
-    // const supabaseClient = new SupabaseClientWrapper();
-    // const userRepository = new UserRepository();
-    const supabaseClient = new MockSupabaseClient();
-    const userRepository = new MockUserRepository();
+    const isDev = process.env.NODE_ENV === 'development';
+
+    const supabaseClient = isDev ? new MockSupabaseClient() : new SupabaseClientWrapper();
+    const userRepository = isDev ? new MockUserRepository() : new UserRepository();
+
     const authService = new AuthService(supabaseClient, userRepository);
 
     await authService.logout();

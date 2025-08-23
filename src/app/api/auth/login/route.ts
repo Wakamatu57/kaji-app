@@ -13,12 +13,12 @@ export async function POST(req: NextRequest) {
     const body: SigninRequest = await req.json();
     const { email, password } = body;
 
-    // const supabaseClient = new SupabaseClientWrapper();
-    // const userRepo = new UserRepository();
-    const supabaseClient = new MockSupabaseClient();
-    const userRepo = new MockUserRepository();
+    const isDev = process.env.NODE_ENV === 'development';
 
-    const authService = new AuthService(supabaseClient, userRepo);
+    const supabaseClient = isDev ? new MockSupabaseClient() : new SupabaseClientWrapper();
+    const userRepository = isDev ? new MockUserRepository() : new UserRepository();
+
+    const authService = new AuthService(supabaseClient, userRepository);
 
     const { user, session, username } = await authService.login(email, password);
 
