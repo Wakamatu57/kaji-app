@@ -2,6 +2,7 @@ import { createClient } from '@supabase/supabase-js';
 import { User } from '../domain/entities/User';
 import { IUserRepository } from '../domain/repositories/IUserRepository';
 import { ISupabaseClient } from '@/domain/repositories/ISupabaseClient';
+import { UserRecord } from '@/models/user-record';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
@@ -40,6 +41,6 @@ export class UserRepository implements IUserRepository {
 
     if (error) throw error;
 
-    return (data ?? []).map((record: any) => User.fromRecord(record));
+    return (data ?? []).map((record: UserRecord) => User.fromRecord(record));
   }
 }

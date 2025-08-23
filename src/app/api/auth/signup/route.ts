@@ -30,22 +30,24 @@ export async function POST(req: NextRequest) {
     );
 
     return NextResponse.json({ message: '登録成功', user }, { status: 201 });
-  } catch (err: any) {
+  } catch (err: Error | unknown) {
     console.error('Signup error:', err);
-    if (err.name === 'EmailAlreadyExistsError') {
-      return NextResponse.json(
-        { message: 'メールアドレスはすでに使用されています' },
-        { status: 400 },
-      );
-    }
-    if (err.name === 'GroupAlreadyExistsError') {
-      return NextResponse.json({ message: 'グループがすでに存在します' }, { status: 400 });
-    }
-    if (err.name === 'GroupNotFoundError') {
-      return NextResponse.json(
-        { message: 'グループが存在しないかグループの合言葉が間違っています' },
-        { status: 400 },
-      );
+    if (err instanceof Error) {
+      if (err.name === 'EmailAlreadyExistsError') {
+        return NextResponse.json(
+          { message: 'メールアドレスはすでに使用されています' },
+          { status: 400 },
+        );
+      }
+      if (err.name === 'GroupAlreadyExistsError') {
+        return NextResponse.json({ message: 'グループがすでに存在します' }, { status: 400 });
+      }
+      if (err.name === 'GroupNotFoundError') {
+        return NextResponse.json(
+          { message: 'グループが存在しないかグループの合言葉が間違っています' },
+          { status: 400 },
+        );
+      }
     }
 
     return NextResponse.json(

@@ -12,6 +12,9 @@ export class CreateTaskService {
 
   async createTask(sessionToken: string, title: string, category: string): Promise<Task> {
     const sessionUser = await this.supabase.auth.getUser(sessionToken);
+    if (!sessionUser.data || !sessionUser.data.user) {
+      throw new Error('ユーザー情報が取得できませんでした。');
+    }
     const user = await this.userRepo.findById(sessionUser.data.user.id);
     if (!user) throw new Error('ユーザーが見つかりません');
 

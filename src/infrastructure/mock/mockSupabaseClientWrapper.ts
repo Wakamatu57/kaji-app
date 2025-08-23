@@ -1,46 +1,49 @@
-import { ISupabaseClient } from '@/domain/repositories/ISupabaseClient';
+import { ISupabaseClient, AuthResponse, SupabaseUser } from '@/domain/repositories/ISupabaseClient';
 
 export class MockSupabaseClient implements ISupabaseClient {
-  private users: { id: string; email: string; password: string }[] = [
-    { id: '1', email: 'test@com', password: 'password' },
-  ];
+  private users: SupabaseUser[] = [{ id: '1', email: 'test@com' }];
 
   auth = {
     admin: {
-      createUser: async ({ email, password }: { email: string; password: string }) => {
-        const exists = this.users.find((u) => u.email === email);
-        if (exists) {
-          return { data: null, error: { message: 'Email already exists' } };
-        }
-        const newUser = { id: `mock-user-${this.users.length + 1}`, email, password };
+      createUser: async (opts: {
+        email: string;
+        password: string;
+        email_confirm?: boolean;
+      }): Promise<AuthResponse<{ user: SupabaseUser }>> => {
+        const exists = this.users.find((u) => u.email === opts.email);
+        if (exists) return { data: null, error: { message: 'Email already exists' } };
+        const newUser: SupabaseUser = {
+          id: `mock-user-${this.users.length + 1}`,
+          email: opts.email,
+        };
         this.users.push(newUser);
         return { data: { user: newUser }, error: null };
       },
-      deleteUser: async (userId: string) => {
+      deleteUser: async (userId: string): Promise<AuthResponse<null>> => {
         this.users = this.users.filter((u) => u.id !== userId);
         return { data: null, error: null };
       },
     },
-    signInWithPassword: async ({ email, password }: { email: string; password: string }) => {
-      const user = this.users.find((u) => u.email === email && u.password === password);
-      if (!user) {
-        return { data: null, error: { message: 'Invalid credentials' } };
-      }
-      return {
-        data: {
-          user,
-          session: { access_token: 'mock-token', user },
-        },
-        error: null,
-      };
+
+    signInWithPassword: async (opts: {
+      email: string;
+      password: string;
+    }): Promise<
+      AuthResponse<{ user: SupabaseUser; session: { access_token: string; user: SupabaseUser } }>
+    > => {
+      const user = this.users.find((u) => u.email === opts.email);
+      if (!user) return { data: null, error: { message: 'Invalid credentials' } };
+      return { data: { user, session: { access_token: 'mock-token', user } }, error: null };
     },
 
-    signOut: async () => {
-      return { error: null };
+    signOut: async (): Promise<AuthResponse<null>> => ({ data: null, error: null }),
+
+    getUser: async (token: string): Promise<AuthResponse<{ user: SupabaseUser }>> => {
+      return { data: { user: this.users[0] }, error: null };
     },
-    getUser: async (token: string) => {
-      const user = this.users[0] ?? null; // 適当なモック
-      return { data: { user }, error: null };
+
+    verifyToken: async (token: string): Promise<AuthResponse<{ user: SupabaseUser }>> => {
+      return { data: { user: this.users[0] }, error: null };
     },
   };
 }

@@ -1,6 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 import { Task } from '@/domain/entities/Task';
 import { ITaskRepository } from '@/domain/repositories/ITaskRepository';
+import { TaskRecord } from '@/models/task_record';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
@@ -25,13 +26,14 @@ export class TaskRepository implements ITaskRepository {
 
     if (error) throw error;
 
-    return (data ?? []).map((record: any) =>
+    return (data ?? []).map((record) =>
       Task.fromRecord({
         task_id: record.task_id,
         title: record.title,
         category: record.category,
         date: record.date,
-        userName: record.users?.username ?? '',
+        users: record.users,
+        user_id: record.user_id,
       }),
     );
   }
@@ -81,13 +83,14 @@ export class TaskRepository implements ITaskRepository {
 
     if (error) throw error;
 
-    return (data ?? []).map((record: any) =>
+    return (data ?? []).map((record: TaskRecord) =>
       Task.fromRecord({
         task_id: record.task_id,
         title: record.title,
         category: record.category,
         date: record.date,
-        userName: record.users?.username ?? '',
+        users: record.users,
+        user_id: record.user_id,
       }),
     );
   }

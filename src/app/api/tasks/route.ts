@@ -27,7 +27,7 @@ export async function GET(req: NextRequest) {
     const tasks = await taskService.getTasks(cookie.value);
 
     return NextResponse.json(tasks, { status: 200 });
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error(err);
     return NextResponse.json({ message: 'タスク取得失敗' }, { status: 500 });
   }
@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
     const task = await service.createTask(sessionToken, title, category);
 
     return NextResponse.json(task, { status: 201 });
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error(err);
     return NextResponse.json({ message: 'タスク追加失敗' }, { status: 500 });
   }

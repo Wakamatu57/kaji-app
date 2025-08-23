@@ -9,6 +9,10 @@ interface DashboardViewProps {
   setFilterMonth: (v: string) => void;
 }
 
+type ChartData = {
+  userName: string;
+} & Record<Exclude<string, 'userName'>, number>;
+
 export default function DashboardView({ tasks, filterMonth, setFilterMonth }: DashboardViewProps) {
   const categoryColors: Record<string, string> = {
     料理: '#4f46e5',
@@ -22,9 +26,9 @@ export default function DashboardView({ tasks, filterMonth, setFilterMonth }: Da
   const filteredTasks = filterMonth ? tasks.filter((t) => t.date.startsWith(filterMonth)) : tasks;
 
   const users = Array.from(new Set(filteredTasks.map((t) => t.userName)));
-  const chartData = users.map((userName) => {
+  const chartData: ChartData[] = users.map((userName) => {
     const userTasks = filteredTasks.filter((t) => t.userName === userName);
-    const data: Record<string, any> = { userName };
+    const data = { userName } as ChartData;
     userTasks.forEach((t) => {
       const cat = categories.includes(t.category) ? t.category : 'その他';
       data[cat] = (data[cat] || 0) + 1;

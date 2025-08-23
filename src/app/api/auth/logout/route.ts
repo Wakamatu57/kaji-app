@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
     });
 
     return res;
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('Logout error:', err);
     return NextResponse.json({ message: 'ログアウトに失敗しました' }, { status: 500 });
   }

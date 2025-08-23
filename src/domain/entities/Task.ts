@@ -1,3 +1,5 @@
+import { TaskRecord } from '@/models/task_record';
+
 export class Task {
   constructor(
     public readonly taskId: number,
@@ -7,13 +9,13 @@ export class Task {
     public userName: string,
   ) {}
 
-  static fromRecord(record: any): Task {
+  static fromRecord(record: TaskRecord): Task {
     return new Task(
       record.task_id,
       record.title,
       record.category,
       record.date,
-      record.user_name ?? record.username ?? '',
+      record.users?.[0]?.username ?? '',
     );
   }
 }

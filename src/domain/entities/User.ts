@@ -1,3 +1,5 @@
+import { UserRecord } from '@/models/user-record';
+
 export class User {
   constructor(
     public readonly userId: string,
@@ -7,7 +9,7 @@ export class User {
     public createdAt: Date,
   ) {}
 
-  static fromRecord(record: any): User {
+  static fromRecord(record: UserRecord): User {
     return new User(
       record.user_id,
       record.username,

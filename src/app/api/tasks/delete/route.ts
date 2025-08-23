@@ -21,8 +21,9 @@ export async function POST(req: NextRequest) {
 
     await service.deleteTask(cookie.value, taskId);
     return NextResponse.json({ message: 'タスク削除成功' }, { status: 200 });
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error(err);
-    return NextResponse.json({ message: err.message || 'タスク削除失敗' }, { status: 500 });
+    const message = err instanceof Error ? err.message : 'タスク削除失敗';
+    return NextResponse.json({ message }, { status: 500 });
   }
 }

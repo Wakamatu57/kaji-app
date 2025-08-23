@@ -22,8 +22,9 @@ export async function POST(req: NextRequest) {
     const updatedTask = await service.updateTask(cookie.value, taskId, title, category);
 
     return NextResponse.json(updatedTask, { status: 200 });
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error(err);
-    return NextResponse.json({ message: err.message || 'タスク更新失敗' }, { status: 500 });
+    const message = err instanceof Error ? err.message : 'タスク更新失敗';
+    return NextResponse.json({ message }, { status: 500 });
   }
 }

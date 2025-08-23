@@ -30,11 +30,11 @@ export async function POST(req: NextRequest) {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production', // 本番のみ https 限定
       path: '/',
-      maxAge: 60 * 60 * 24 * 7, // 7日
+      maxAge: 60 * 60 * 24 * 7, // 7日koredeokorare
     });
 
     return res;
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('Login error:', err);
 
     if (err instanceof InvalidCredentialsError) {
