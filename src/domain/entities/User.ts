@@ -3,7 +3,7 @@ export class User {
     public readonly userId: string,
     public username: string,
     public email: string,
-    public groupId: string,
+    public groupId: number,
     public createdAt: Date,
   ) {}
 

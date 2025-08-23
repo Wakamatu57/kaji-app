@@ -1,6 +1,6 @@
 export class Group {
   constructor(
-    public readonly groupId: string,
+    public readonly groupId: number,
     public name: string,
     public password: string,
     public createdAt: Date,

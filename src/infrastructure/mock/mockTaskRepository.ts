@@ -4,11 +4,11 @@ import { Task } from '@/domain/entities/Task';
 
 export class MockTaskRepository implements ITaskRepository {
   private tasks: Task[] = [
-    new Task('1', '掃除', '家事', '2025-08-07', '太郎'),
-    new Task('2', '買い物', '買い物', '2025-08-07', '花子'),
+    new Task(1, '掃除', '家事', '2025-08-07', '太郎'),
+    new Task(2, '買い物', '買い物', '2025-08-07', '花子'),
   ];
 
-  async findByGroupId(groupId: string): Promise<Task[]> {
+  async findByGroupId(groupId: number): Promise<Task[]> {
     // グループごとの絞り込みは無視して全タスク返す（モックなので）
     console.log(`MockTaskRepository: findByGroupId called with groupId=${groupId}`);
     return this.tasks;

@@ -6,13 +6,13 @@ export class MockUserRepository implements IUserRepository {
     userId: string,
     username: string,
     email: string,
-    groupId: string,
+    groupId: number,
   ): Promise<User> => {
     return new User(userId, username, email, groupId, new Date());
   };
   findById = async (userId: string): Promise<User | null> => {
     if (userId === '1') {
-      return new User('1', 'testuser', 'test@com', '1', new Date());
+      return new User('1', 'testuser', 'test@com', 1, new Date());
     }
     return null;
   };

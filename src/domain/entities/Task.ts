@@ -1,6 +1,6 @@
 export class Task {
   constructor(
-    public readonly taskId: string,
+    public readonly taskId: number,
     public title: string,
     public category: string,
     public date: string,

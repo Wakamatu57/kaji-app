@@ -11,7 +11,7 @@ export class UserRepository implements IUserRepository {
 
   private client = createClient(supabaseUrl, supabaseKey);
 
-  async create(userId: string, username: string, email: string, groupId: string): Promise<User> {
+  async create(userId: string, username: string, email: string, groupId: number): Promise<User> {
     const { data, error } = await this.client
       .from('users')
       .insert([{ user_id: userId, username, email, group_id: groupId }])

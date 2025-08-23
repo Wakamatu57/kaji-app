@@ -8,7 +8,7 @@ const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 export class TaskRepository implements ITaskRepository {
   private client = createClient(supabaseUrl, supabaseKey);
 
-  async findByGroupId(groupId: string): Promise<Task[]> {
+  async findByGroupId(groupId: number): Promise<Task[]> {
     const { data, error } = await this.client
       .from('tasks')
       .select(
