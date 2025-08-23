@@ -8,8 +8,6 @@ export class SupabaseClientWrapper implements ISupabaseClient {
   private client: SupabaseClient;
 
   constructor() {
-    console.log('Supabase URL:', supabaseUrl);
-    console.log('Supabase Key:', supabaseKey);
     this.client = createClient(supabaseUrl, supabaseKey);
   }
 
@@ -21,6 +19,9 @@ export class SupabaseClientWrapper implements ISupabaseClient {
         email_confirm?: boolean;
       }): Promise<AuthResponse<{ user: SupabaseUser }>> => {
         const { data, error } = await this.client.auth.admin.createUser(opts);
+        if (error) {
+          console.error('Error creating user:', error);
+        }
 
         if (!data?.user) return { data: null, error };
 
