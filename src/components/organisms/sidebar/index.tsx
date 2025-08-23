@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useLocalStorage } from '../../../hooks/uselocalStorage';
 import { LOCAL_STORAGE_KEYS } from '../../../lib/localStorageKeys';
+import { logout } from '@/services';
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,10 +14,17 @@ export default function Sidebar() {
   const [username, setUsername, removeUsername] = useLocalStorage(LOCAL_STORAGE_KEYS.USERNAME, '');
   const [usermail, setUsermail, removeUsermail] = useLocalStorage(LOCAL_STORAGE_KEYS.USERMAIL, '');
 
-  const handleLogout = () => {
-    removeUsername();
-    removeUsermail();
-    router.push('/');
+  const handleLogout = async () => {
+    try {
+      await logout();
+      removeUsername();
+      removeUsermail();
+      router.push('/');
+    } catch (err) {
+      console.error('ログアウト失敗', err);
+      alert('ログアウトに失敗しました。');
+      return;
+    }
   };
 
   return (

@@ -21,4 +21,17 @@ export class UserRepository implements IUserRepository {
     if (error) throw error;
     return User.fromRecord(data);
   }
+
+  async findById(userId: string): Promise<User | null> {
+    const { data, error } = await this.client
+      .from('users')
+      .select('*')
+      .eq('user_id', userId)
+      .maybeSingle();
+
+    if (error) throw error;
+    if (!data) return null;
+
+    return User.fromRecord(data);
+  }
 }

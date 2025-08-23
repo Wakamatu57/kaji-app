@@ -7,10 +7,6 @@ const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 export class SupabaseClientWrapper implements ISupabaseClient {
   private client = createClient(supabaseUrl, supabaseKey);
 
-  from(table: string) {
-    return this.client.from(table);
-  }
-
   auth = {
     admin: {
       createUser: async (opts: { email: string; password: string; email_confirm?: boolean }) =>
@@ -19,5 +15,9 @@ export class SupabaseClientWrapper implements ISupabaseClient {
     },
     signInWithPassword: async (opts: { email: string; password: string }) =>
       this.client.auth.signInWithPassword(opts),
+
+    signOut: async () => this.client.auth.signOut(),
+
+    getUser: async (token: string) => this.client.auth.getUser(token),
   };
 }

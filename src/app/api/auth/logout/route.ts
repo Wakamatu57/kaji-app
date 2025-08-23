@@ -1,0 +1,33 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { SupabaseClientWrapper } from '@/infrastructure/SupabaseClientWrapper';
+import { AuthService } from '@/application/services/AuthService';
+import { User } from '@/domain/entities/User';
+import { UserRepository } from '@/infrastructure/UserRepository';
+import { MockSupabaseClient } from '@/infrastructure/mock/mockSupabaseClientWrapper';
+import { MockUserRepository } from '@/infrastructure/mock/mockUserRepository';
+
+export async function POST(req: NextRequest) {
+  try {
+    // const supabaseClient = new SupabaseClientWrapper();
+    // const userRepository = new UserRepository();
+    const supabaseClient = new MockSupabaseClient();
+    const userRepository = new MockUserRepository();
+    const authService = new AuthService(supabaseClient, userRepository);
+
+    await authService.logout();
+
+    // Cookieを削除
+    const res = NextResponse.json({ message: 'ログアウトしました' }, { status: 200 });
+    res.cookies.set('session', '', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      path: '/',
+      expires: new Date(0), // 期限切れにする
+    });
+
+    return res;
+  } catch (err: any) {
+    console.error('Logout error:', err);
+    return NextResponse.json({ message: 'ログアウトに失敗しました' }, { status: 500 });
+  }
+}
