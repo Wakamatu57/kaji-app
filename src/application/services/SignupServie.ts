@@ -23,7 +23,7 @@ export class SignupService {
     const { data: authUser, error: authError } = await this.supabase.auth.admin.createUser({
       email,
       password,
-      email_confirm: false,
+      email_confirm: true,
     });
     if (authError || !authUser?.user) {
       throw new EmailAlreadyExistsError(email);
