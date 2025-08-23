@@ -47,6 +47,7 @@ export class SupabaseClientWrapper implements ISupabaseClient {
       AuthResponse<{ user: SupabaseUser; session: { access_token: string; user: SupabaseUser } }>
     > => {
       const { data, error } = await this.client.auth.signInWithPassword(opts);
+      console.log('signInWithPassword error:', error);
       if (!data) return { data: null, error };
 
       const user: SupabaseUser = {
