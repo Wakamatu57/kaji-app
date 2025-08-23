@@ -22,6 +22,5 @@ create table tasks (
   category text not null,
   date timestamptz default now(),
   user_id uuid references users(user_id), -- Supabase auth id を外部キーにする
-  group_id int references groups(group_id)
   created_at timestamptz default now()
 );
