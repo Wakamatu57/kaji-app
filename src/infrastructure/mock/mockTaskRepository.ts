@@ -10,14 +10,22 @@ export class MockTaskRepository implements ITaskRepository {
 
   async findByGroupId(groupId: number): Promise<Task[]> {
     // グループごとの絞り込みは無視して全タスク返す（モックなので）
-    console.log(`MockTaskRepository: findByGroupId called with groupId=${groupId}`);
+    console.log('tasks', this.tasks);
     return this.tasks;
   }
 
-  //   async create(task: Task): Promise<Task> {
-  //     this.tasks.push(task);
-  //     return task;
-  //   }
+  async create(userId: string, groupId: number, title: string, category: string): Promise<Task> {
+    const task = new Task(
+      this.tasks.length + 1,
+      title,
+      category,
+      new Date().toISOString().split('T')[0],
+      `testuser`,
+    );
+    this.tasks.push(task);
+    console.log('this.tasks', this.tasks);
+    return task;
+  }
 
   //   async update(task: Task): Promise<Task> {
   //     const index = this.tasks.findIndex((t) => t.taskId === task.taskId);

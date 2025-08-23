@@ -35,4 +35,15 @@ export class TaskRepository implements ITaskRepository {
       }),
     );
   }
+
+  async create(userId: string, groupId: number, title: string, category: string): Promise<Task> {
+    const { data, error } = await this.client
+      .from('tasks')
+      .insert([{ user_id: userId, group_id: groupId, title, category }])
+      .select()
+      .single();
+
+    if (error) throw error;
+    return Task.fromRecord(data);
+  }
 }
