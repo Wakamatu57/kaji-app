@@ -1,0 +1,32 @@
+// infra/repositories/MockTaskRepository.ts
+import { ITaskRepository } from '@/domain/repositories/ITaskRepository';
+import { Task } from '@/domain/entities/Task';
+
+export class MockTaskRepository implements ITaskRepository {
+  private tasks: Task[] = [
+    new Task('1', '掃除', '家事', '2025-08-07', '太郎'),
+    new Task('2', '買い物', '買い物', '2025-08-07', '花子'),
+  ];
+
+  async findByGroupId(groupId: string): Promise<Task[]> {
+    // グループごとの絞り込みは無視して全タスク返す（モックなので）
+    console.log(`MockTaskRepository: findByGroupId called with groupId=${groupId}`);
+    return this.tasks;
+  }
+
+  //   async create(task: Task): Promise<Task> {
+  //     this.tasks.push(task);
+  //     return task;
+  //   }
+
+  //   async update(task: Task): Promise<Task> {
+  //     const index = this.tasks.findIndex((t) => t.taskId === task.taskId);
+  //     if (index === -1) throw new Error('Task not found');
+  //     this.tasks[index] = task;
+  //     return task;
+  //   }
+
+  //   async delete(taskId: string): Promise<void> {
+  //     this.tasks = this.tasks.filter((t) => t.taskId !== taskId);
+  //   }
+}
