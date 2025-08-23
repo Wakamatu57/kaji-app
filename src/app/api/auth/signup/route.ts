@@ -13,8 +13,8 @@ export async function POST(req: NextRequest) {
     const body: SignupRequest = await req.json();
 
     // const supabaseClient = new SupabaseClientWrapper();
-    // const groupRepo = new GroupRepository(supabaseClient);
-    // const userRepo = new UserRepository(supabaseClient);
+    // const groupRepo = new GroupRepository();
+    // const userRepo = new UserRepository();
     const supabaseClient = new MockSupabaseClient();
     const groupRepo = new MockGroupRepository();
     const userRepo = new MockUserRepository();
@@ -43,7 +43,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: 'グループがすでに存在します' }, { status: 400 });
     }
     if (err.name === 'GroupNotFoundError') {
-      return NextResponse.json({ message: 'グループが存在しません' }, { status: 400 });
+      return NextResponse.json(
+        { message: 'グループが存在しないかグループの合言葉が間違っています' },
+        { status: 400 },
+      );
     }
 
     return NextResponse.json(
