@@ -20,7 +20,6 @@ export async function POST(req: NextRequest) {
     const service = new DeleteTaskService(supabaseClient, taskRepository);
 
     await service.deleteTask(cookie.value, taskId);
-    console.log('Task deleted successfully');
     return NextResponse.json({ message: 'タスク削除成功' }, { status: 200 });
   } catch (err: any) {
     console.error(err);
