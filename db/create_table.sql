@@ -20,7 +20,7 @@ create table tasks (
   task_id serial primary key,
   title text not null,
   category text not null,
-  date text default not null,
+  date text not null,
   user_id uuid references users(user_id), -- Supabase auth id を外部キーにする
   created_at timestamptz default now()
 );
