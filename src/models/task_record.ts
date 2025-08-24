@@ -6,6 +6,6 @@ export interface TaskRecord {
   title: string;
   category: string;
   date: string;
-  users?: UserRelation[];
+  users: UserRelation | UserRelation[];
   user_id: string;
 }

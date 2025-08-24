@@ -10,12 +10,9 @@ export class Task {
   ) {}
 
   static fromRecord(record: TaskRecord): Task {
-    return new Task(
-      record.task_id,
-      record.title,
-      record.category,
-      record.date,
-      record.users?.[0]?.username ?? '',
-    );
+    const username = Array.isArray(record.users)
+      ? (record.users[0]?.username ?? '')
+      : (record.users?.username ?? '');
+    return new Task(record.task_id, record.title, record.category, record.date, username);
   }
 }
