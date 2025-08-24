@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
 
   const supabaseClient = isDev ? new MockSupabaseClient() : new SupabaseClientWrapper();
   const taskRepository = isDev ? new MockTaskRepository() : new TaskRepository(accessToken);
-  const userRepository = isDev ? new MockUserRepository() : new UserRepository(accessToken);
+  const userRepository = isDev ? new MockUserRepository() : new UserRepository();
 
   try {
     const taskService = new GetTasksService(supabaseClient, taskRepository, userRepository);
@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: 'ログイン画面からやり直してください' }, { status: 401 });
   const supabaseClient = isDev ? new MockSupabaseClient() : new SupabaseClientWrapper();
   const taskRepository = isDev ? new MockTaskRepository() : new TaskRepository(accessToken);
-  const userRepository = isDev ? new MockUserRepository() : new UserRepository(accessToken);
+  const userRepository = isDev ? new MockUserRepository() : new UserRepository();
   try {
     const { title, category } = await req.json();
 
