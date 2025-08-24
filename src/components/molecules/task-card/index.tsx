@@ -71,6 +71,9 @@ export function TaskCard({ task, onEditTask, onDeleteTask }: TaskCardProps) {
                 <option value="買い物">買い物</option>
                 <option value="その他">その他</option>
               </select>
+              <p className="mb-2 text-xs italic text-gray-500">
+                * 他の人が作成したタスクは編集できません
+              </p>{' '}
               <div className="flex gap-2 justify-end">
                 <button
                   type="button"
@@ -92,6 +95,9 @@ export function TaskCard({ task, onEditTask, onDeleteTask }: TaskCardProps) {
           <div className="bg-white p-6 rounded shadow w-full max-w-xs">
             <h2 className="text-lg font-bold mb-4 text-red-600">削除確認</h2>
             <p className="mb-4">「{task.title}」を削除しますか？この操作は元に戻せません。</p>
+            <p className="mb-2 text-xs italic text-gray-500">
+              * 他の人が作成したタスクは削除できません
+            </p>
             <div className="flex gap-2 justify-end">
               <button
                 type="button"
