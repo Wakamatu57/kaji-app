@@ -12,14 +12,17 @@ export class GetTasksService {
     private userRepo: IUserRepository,
   ) {}
 
-  async getTasks(userId: string, accessToken: string) {
+  async getTasks(userId: string) {
     try {
       const user = await this.userRepo.findById(userId);
+      console.log('user ', user);
       if (!user) throw new Error('ユーザーが見つかりません。');
 
       // 同じグループに属するユーザー一覧を取得
       const groupUsers = await this.userRepo.findByGroupId(user.groupId);
+      console.log('groupUsers ', groupUsers);
       const userIds = groupUsers.map((u) => u.userId);
+      console.log('userIds ', userIds);
 
       // ユーザーID一覧からタスク取得
       return this.taskRepo.findByUserIds(userIds);
