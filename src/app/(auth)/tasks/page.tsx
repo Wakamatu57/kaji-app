@@ -25,7 +25,7 @@ export default function TasksPage() {
       setTasks(tasks);
     } catch (err) {
       console.error('タスク取得失敗', err);
-      alert('タスクの取得に失敗しました。');
+      alert(err instanceof Error ? err.message : 'タスクの取得に失敗しました。');
     } finally {
       hideLoading();
     }
@@ -45,7 +45,7 @@ export default function TasksPage() {
       await deleteTask({ taskId });
     } catch (err) {
       console.error('タスク削除失敗', err);
-      alert('タスクの削除に失敗しました。');
+      alert(err instanceof Error ? err.message : 'タスクの削除に失敗しました。');
     } finally {
       hideLoading();
     }
@@ -59,7 +59,7 @@ export default function TasksPage() {
       await updateTask({ taskId, title, category });
     } catch (err) {
       console.error('タスク更新失敗', err);
-      alert('タスクの更新に失敗しました。');
+      alert(err instanceof Error ? err.message : 'タスクの更新に失敗しました。');
     } finally {
       hideLoading();
     }
@@ -74,7 +74,7 @@ export default function TasksPage() {
       await addTaskApi({ title: taskName, category });
     } catch (err) {
       console.error('タスク追加失敗', err);
-      alert('タスクの追加に失敗しました。');
+      alert(err instanceof Error ? err.message : 'タスクの追加に失敗しました。');
     } finally {
       hideLoading();
     }
