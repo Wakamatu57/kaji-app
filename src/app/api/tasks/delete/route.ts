@@ -4,23 +4,27 @@ import { SupabaseClientWrapper } from '@/infrastructure/SupabaseClientWrapper';
 import { TaskRepository } from '@/infrastructure/TaskRepository';
 import { MockSupabaseClient } from '@/infrastructure/mock/mockSupabaseClientWrapper';
 import { MockTaskRepository } from '@/infrastructure/mock/mockTaskRepository';
+import { getUserFromCookies, setAuthCookies } from '@/utils/auth';
+
+const isDev = process.env.NODE_ENV === 'development';
 
 export async function POST(req: NextRequest) {
-  try {
-    const cookie = req.cookies.get('session');
-    if (!cookie) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+  const { user, accessToken, refreshToken } = await getUserFromCookies(req);
+  if (!user || !accessToken || !refreshToken)
+    return NextResponse.json({ message: 'ログイン画面からやり直してください' }, { status: 401 });
 
+  const taskRepository = isDev ? new MockTaskRepository() : new TaskRepository(accessToken);
+
+  try {
     const { taskId } = await req.json();
 
-    const isDev = process.env.NODE_ENV === 'development';
+    const service = new DeleteTaskService(taskRepository);
+    await service.deleteTask(taskId);
 
-    const supabaseClient = isDev ? new MockSupabaseClient() : new SupabaseClientWrapper();
-    const taskRepository = isDev ? new MockTaskRepository() : new TaskRepository();
-
-    const service = new DeleteTaskService(supabaseClient, taskRepository);
-
-    await service.deleteTask(cookie.value, taskId);
-    return NextResponse.json({ message: 'タスク削除成功' }, { status: 200 });
+    const res = NextResponse.json({ message: 'タスク削除成功' }, { status: 200 });
+    if (!accessToken || !refreshToken) return res;
+    setAuthCookies(accessToken, refreshToken, res);
+    return res;
   } catch (err: unknown) {
     console.error(err);
     const message = err instanceof Error ? err.message : 'タスク削除失敗';

@@ -4,22 +4,27 @@ import { SupabaseClientWrapper } from '@/infrastructure/SupabaseClientWrapper';
 import { TaskRepository } from '@/infrastructure/TaskRepository';
 import { MockSupabaseClient } from '@/infrastructure/mock/mockSupabaseClientWrapper';
 import { MockTaskRepository } from '@/infrastructure/mock/mockTaskRepository';
+import { getUserFromCookies, setAuthCookies } from '@/utils/auth';
 
 export async function POST(req: NextRequest) {
-  try {
-    const cookie = req.cookies.get('session');
-    if (!cookie) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+  const { user, accessToken, refreshToken } = await getUserFromCookies(req);
+  if (!user || !accessToken || !refreshToken)
+    return NextResponse.json({ message: 'ログイン画面からやり直してください' }, { status: 401 });
 
+  try {
     const { taskId, title, category } = await req.json();
 
     const isDev = process.env.NODE_ENV === 'development';
+    const taskRepository = isDev ? new MockTaskRepository() : new TaskRepository(accessToken);
 
-    const supabaseClient = isDev ? new MockSupabaseClient() : new SupabaseClientWrapper();
-    const taskRepository = isDev ? new MockTaskRepository() : new TaskRepository();
+    const service = new UpdateTaskService(taskRepository);
 
-    const service = new UpdateTaskService(supabaseClient, taskRepository);
+    const updatedTask = await service.updateTask(taskId, title, category);
 
-    const updatedTask = await service.updateTask(cookie.value, taskId, title, category);
+    const res = NextResponse.json(updatedTask, { status: 200 });
+
+    if (!accessToken || !refreshToken) return res;
+    setAuthCookies(accessToken, refreshToken, res);
 
     return NextResponse.json(updatedTask, { status: 200 });
   } catch (err: unknown) {

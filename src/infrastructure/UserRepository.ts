@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { User } from '../domain/entities/User';
 import { IUserRepository } from '../domain/repositories/IUserRepository';
 import { ISupabaseClient } from '@/domain/repositories/ISupabaseClient';
@@ -8,9 +8,18 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
 export class UserRepository implements IUserRepository {
-  constructor() {}
-
-  private client = createClient(supabaseUrl, supabaseKey);
+  private client: SupabaseClient;
+  constructor(accessToken: string) {
+    this.client = createClient(supabaseUrl, '', {
+      auth: {
+        persistSession: false,
+        storage: undefined,
+        autoRefreshToken: false,
+        detectSessionInUrl: false,
+      },
+      global: { headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : undefined },
+    });
+  }
 
   async create(userId: string, username: string, email: string, groupId: number): Promise<User> {
     const { data, error } = await this.client

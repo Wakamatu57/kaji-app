@@ -7,6 +7,7 @@ import { SupabaseClientWrapper } from '@/infrastructure/SupabaseClientWrapper';
 import { MockSupabaseClient } from '@/infrastructure/mock/mockSupabaseClientWrapper';
 import { MockGroupRepository } from '@/infrastructure/mock/mockGroupRepository';
 import { MockUserRepository } from '@/infrastructure/mock/mockUserRepository';
+import { AdminUserRepository } from '@/infrastructure/AdminUserRepository';
 
 export async function POST(req: NextRequest) {
   try {
@@ -15,7 +16,7 @@ export async function POST(req: NextRequest) {
     const isDev = process.env.NODE_ENV === 'development';
 
     const supabaseClient = isDev ? new MockSupabaseClient() : new SupabaseClientWrapper();
-    const userRepo = isDev ? new MockUserRepository() : new UserRepository();
+    const userRepo = isDev ? new MockUserRepository() : new AdminUserRepository();
     const groupRepo = isDev ? new MockGroupRepository() : new GroupRepository();
 
     const service = new SignupService(supabaseClient, groupRepo, userRepo);

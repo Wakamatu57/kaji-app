@@ -7,6 +7,8 @@ import { MockSupabaseClient } from '@/infrastructure/mock/mockSupabaseClientWrap
 import { User } from '@/domain/entities/User';
 import { UserRepository } from '@/infrastructure/UserRepository';
 import { MockUserRepository } from '@/infrastructure/mock/mockUserRepository';
+import { setAuthCookies } from '@/utils/auth';
+import { AdminUserRepository } from '@/infrastructure/AdminUserRepository';
 
 export async function POST(req: NextRequest) {
   try {
@@ -16,7 +18,7 @@ export async function POST(req: NextRequest) {
     const isDev = process.env.NODE_ENV === 'development';
 
     const supabaseClient = isDev ? new MockSupabaseClient() : new SupabaseClientWrapper();
-    const userRepository = isDev ? new MockUserRepository() : new UserRepository();
+    const userRepository = isDev ? new MockUserRepository() : new AdminUserRepository();
 
     const authService = new AuthService(supabaseClient, userRepository);
 
@@ -24,15 +26,7 @@ export async function POST(req: NextRequest) {
 
     // セッションを Cookie に保存
     const res = NextResponse.json({ username }, { status: 200 });
-    res.cookies.set({
-      name: 'session',
-      value: session.access_token,
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // 本番のみ https 限定
-      path: '/',
-      maxAge: 60 * 60 * 24 * 7, // 7日koredeokorare
-    });
-
+    setAuthCookies(session.access_token, session.refresh_token, res);
     return res;
   } catch (err: unknown) {
     console.error('Login error:', err);

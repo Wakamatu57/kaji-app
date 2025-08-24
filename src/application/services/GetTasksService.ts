@@ -12,13 +12,9 @@ export class GetTasksService {
     private userRepo: IUserRepository,
   ) {}
 
-  async getTasks(sessionToken: string) {
+  async getTasks(userId: string, accessToken: string) {
     try {
-      const sessionUser = await this.supabase.auth.getUser(sessionToken);
-      if (!sessionUser.data || !sessionUser.data.user) {
-        throw new Error('ユーザー情報が取得できませんでした。');
-      }
-      const user = await this.userRepo.findById(sessionUser.data.user.id);
+      const user = await this.userRepo.findById(userId);
       if (!user) throw new Error('ユーザーが見つかりません。');
 
       // 同じグループに属するユーザー一覧を取得

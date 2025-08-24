@@ -34,6 +34,28 @@ export class SupabaseClientWrapper implements ISupabaseClient {
         return { data: { user: supabaseUser }, error };
       },
 
+      refreshSession: async (refresh_token: string) => {
+        const { data, error } = await this.client.auth.refreshSession({ refresh_token });
+        if (!data?.session) return { data: null, error };
+
+        const user: SupabaseUser = {
+          ...data.session.user,
+          email: data.session.user?.email || '',
+          id: data.session.user?.id || '',
+        };
+
+        return {
+          data: {
+            session: {
+              access_token: data.session.access_token,
+              refresh_token: data.session.refresh_token,
+              user,
+            },
+          },
+          error,
+        };
+      },
+
       deleteUser: async (userId: string): Promise<AuthResponse<null>> => {
         const { error } = await this.client.auth.admin.deleteUser(userId);
         return { data: null, error };
@@ -44,7 +66,10 @@ export class SupabaseClientWrapper implements ISupabaseClient {
       email: string;
       password: string;
     }): Promise<
-      AuthResponse<{ user: SupabaseUser; session: { access_token: string; user: SupabaseUser } }>
+      AuthResponse<{
+        user: SupabaseUser;
+        session: { access_token: string; refresh_token: string; user: SupabaseUser };
+      }>
     > => {
       const { data, error } = await this.client.auth.signInWithPassword(opts);
       console.log('signInWithPassword error:', error);
@@ -57,7 +82,14 @@ export class SupabaseClientWrapper implements ISupabaseClient {
       };
 
       return {
-        data: { user, session: { access_token: data.session?.access_token || '', user } },
+        data: {
+          user,
+          session: {
+            access_token: data.session?.access_token || '',
+            refresh_token: data.session?.refresh_token || '',
+            user,
+          },
+        },
         error,
       };
     },

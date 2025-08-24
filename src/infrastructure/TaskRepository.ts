@@ -2,12 +2,23 @@ import { createClient } from '@supabase/supabase-js';
 import { Task } from '@/domain/entities/Task';
 import { ITaskRepository } from '@/domain/repositories/ITaskRepository';
 import { TaskRecord } from '@/models/task_record';
+import { SupabaseClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
 export class TaskRepository implements ITaskRepository {
-  private client = createClient(supabaseUrl, supabaseKey);
+  private client: SupabaseClient;
+  constructor(accessToken: string) {
+    this.client = createClient(supabaseUrl, '', {
+      auth: {
+        persistSession: false,
+        storage: undefined,
+        autoRefreshToken: false,
+        detectSessionInUrl: false,
+      },
+      global: { headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : undefined },
+    });
+  }
 
   async findByGroupId(groupId: number): Promise<Task[]> {
     const { data, error } = await this.client

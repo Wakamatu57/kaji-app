@@ -23,17 +23,42 @@ export class MockSupabaseClient implements ISupabaseClient {
         this.users = this.users.filter((u) => u.id !== userId);
         return { data: null, error: null };
       },
+      refreshSession: async (
+        refresh_token: string,
+      ): Promise<
+        AuthResponse<{
+          session: { access_token: string; refresh_token: string; user: SupabaseUser };
+        }>
+      > => {
+        const user = this.users[0];
+        return {
+          data: {
+            session: {
+              access_token: 'mock-access-token-' + Math.random().toString(36).substring(2, 10),
+              refresh_token: 'mock-refresh-token-' + Math.random().toString(36).substring(2, 10),
+              user,
+            },
+          },
+          error: null,
+        };
+      },
     },
 
     signInWithPassword: async (opts: {
       email: string;
       password: string;
     }): Promise<
-      AuthResponse<{ user: SupabaseUser; session: { access_token: string; user: SupabaseUser } }>
+      AuthResponse<{
+        user: SupabaseUser;
+        session: { access_token: string; refresh_token: string; user: SupabaseUser };
+      }>
     > => {
       const user = this.users.find((u) => u.email === opts.email);
       if (!user) return { data: null, error: { message: 'Invalid credentials' } };
-      return { data: { user, session: { access_token: 'mock-token', user } }, error: null };
+      return {
+        data: { user, session: { access_token: 'mock-token', refresh_token: 'refrsh', user } },
+        error: null,
+      };
     },
 
     signOut: async (): Promise<AuthResponse<null>> => ({ data: null, error: null }),
