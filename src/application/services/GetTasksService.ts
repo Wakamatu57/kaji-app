@@ -14,6 +14,7 @@ export class GetTasksService {
 
   async getTasks(userId: string) {
     try {
+      console.log('userId ', userId);
       const user = await this.userRepo.findById(userId);
       console.log('user ', user);
       if (!user) throw new Error('ユーザーが見つかりません。');
