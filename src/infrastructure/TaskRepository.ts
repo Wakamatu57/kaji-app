@@ -72,12 +72,19 @@ export class TaskRepository implements ITaskRepository {
       .single();
 
     if (error) throw error;
+    if (!data) {
+      throw new Error('更新できません（存在しないか権限なし）');
+    }
     return Task.fromRecord(data);
   }
 
   async delete(taskId: number): Promise<void> {
-    const { data, error } = await this.client.from('tasks').delete().eq('task_id', taskId);
+    const { data, error } = await this.client.from('tasks').delete().eq('task_id', taskId).select();
     if (error) throw error;
+
+    if (!data || data.length === 0) {
+      throw new Error('削除できません（存在しないか権限なし）');
+    }
   }
 
   async findByUserIds(userIds: string[]): Promise<Task[]> {
