@@ -103,7 +103,6 @@ export class TaskRepository implements ITaskRepository {
       .in('user_id', userIds);
 
     if (error) throw error;
-    console.log('data: ', data);
     return (data ?? []).map((record: TaskRecord) =>
       Task.fromRecord({
         task_id: record.task_id,
