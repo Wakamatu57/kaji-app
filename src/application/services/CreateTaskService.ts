@@ -2,6 +2,7 @@ import { ISupabaseClient } from '@/domain/repositories/ISupabaseClient';
 import { IUserRepository } from '@/domain/repositories/IUserRepository';
 import { ITaskRepository } from '@/domain/repositories/ITaskRepository';
 import { Task } from '@/domain/entities/Task';
+import { createJSTDate } from '@/utils/date';
 
 export class CreateTaskService {
   constructor(
@@ -14,7 +15,7 @@ export class CreateTaskService {
     const user = await this.userRepo.findById(userId);
     if (!user) throw new Error('ユーザーが見つかりません');
 
-    const date = new Date().toISOString().split('T')[0];
+    const date = createJSTDate();
     return this.taskRepo.create(user.userId, title, category, date);
   }
 }
