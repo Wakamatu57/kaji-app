@@ -1,66 +1,23 @@
--- === タスク共有用 RLS ポリシー適用 ===
-
--- まず RLS を有効化
-alter table tasks enable row level security;
-
--- 既存ポリシーがあれば削除（再適用用）
-drop policy if exists "Users can read tasks in their group" on tasks;
-drop policy if exists "Users can insert tasks in their group" on tasks;
-drop policy if exists "Users can update tasks in their group" on tasks;
-drop policy if exists "Users can delete tasks in their group" on tasks;
-
--- グループ内のタスクを取得できる
-create policy "Users can read tasks in their group"
+-- 全員に SELECT を許可
+create policy "Allow select for authenticated users"
 on tasks
 for select
-using (
-  exists (
-    select 1
-    from users u1
-    join users u2 on u1.group_id = u2.group_id
-    where u1.user_id = auth.uid()
-      and u2.user_id = tasks.user_id
-  )
-);
+using (true);
 
--- グループ内でタスクを追加できる
-create policy "Users can insert tasks in their group"
+-- 全員に INSERT を許可（ただし必ず自分の user_id でしか作れない）
+create policy "Allow insert for authenticated users"
 on tasks
 for insert
-with check (
-  exists (
-    select 1
-    from users u1
-    join users u2 on u1.group_id = u2.group_id
-    where u1.user_id = auth.uid()
-      and u2.user_id = tasks.user_id
-  )
-);
+with check (user_id = auth.uid());
 
--- グループ内のタスクを更新できる
-create policy "Users can update tasks in their group"
+-- UPDATE は自分のタスクのみ
+create policy "Users can update their own tasks"
 on tasks
 for update
-using (
-  exists (
-    select 1
-    from users u1
-    join users u2 on u1.group_id = u2.group_id
-    where u1.user_id = auth.uid()
-      and u2.user_id = tasks.user_id
-  )
-);
+using (user_id = auth.uid());
 
--- グループ内のタスクを削除できる
-create policy "Users can delete tasks in their group"
+-- DELETE も自分のタスクのみ
+create policy "Users can delete their own tasks"
 on tasks
 for delete
-using (
-  exists (
-    select 1
-    from users u1
-    join users u2 on u1.group_id = u2.group_id
-    where u1.user_id = auth.uid()
-      and u2.user_id = tasks.user_id
-  )
-);
+using (user_id = auth.uid());
