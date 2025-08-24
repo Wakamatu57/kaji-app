@@ -40,7 +40,7 @@ export class TaskRepository implements ITaskRepository {
       .eq('users.group_id', groupId);
 
     if (error) throw error;
-
+    console.log('data: ', data);
     return (data ?? []).map((record) =>
       Task.fromRecord({
         task_id: record.task_id,
