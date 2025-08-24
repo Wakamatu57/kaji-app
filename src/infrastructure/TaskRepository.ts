@@ -76,7 +76,7 @@ export class TaskRepository implements ITaskRepository {
   }
 
   async delete(taskId: number): Promise<void> {
-    const { error } = await this.client.from('tasks').delete().eq('task_id', taskId);
+    const { data, error } = await this.client.from('tasks').delete().eq('task_id', taskId);
     if (error) throw error;
   }
 
