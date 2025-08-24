@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const taskService = new GetTasksService(supabaseClient, taskRepository, userRepository);
-    const tasks = await taskService.getTasks(user.id, accessToken ?? '');
+    const tasks = await taskService.getTasks(user.id);
 
     const res = NextResponse.json(tasks, { status: 200 });
     if (!accessToken || !refreshToken) return res;
