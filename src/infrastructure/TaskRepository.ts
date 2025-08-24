@@ -5,11 +5,12 @@ import { TaskRecord } from '@/models/task_record';
 import { SupabaseClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
 export class TaskRepository implements ITaskRepository {
   private client: SupabaseClient;
   constructor(accessToken: string) {
-    this.client = createClient(supabaseUrl, '', {
+    this.client = createClient(supabaseUrl, supabaseKey, {
       auth: {
         persistSession: false,
         storage: undefined,
