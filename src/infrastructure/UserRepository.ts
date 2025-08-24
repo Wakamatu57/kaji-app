@@ -30,7 +30,6 @@ export class UserRepository implements IUserRepository {
       .select('*')
       .eq('user_id', userId)
       .maybeSingle();
-    console.log('error: ', error);
     if (error) throw error;
     if (!data) return null;
 
@@ -39,7 +38,6 @@ export class UserRepository implements IUserRepository {
 
   async findByGroupId(groupId: number): Promise<User[]> {
     const { data, error } = await this.client.from('users').select('*').eq('group_id', groupId);
-    console.log('error: ', error);
     if (error) throw error;
 
     return (data ?? []).map((record: UserRecord) => User.fromRecord(record));
