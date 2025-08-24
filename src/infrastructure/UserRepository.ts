@@ -9,7 +9,7 @@ const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
 export class UserRepository implements IUserRepository {
   private client: SupabaseClient;
-  constructor(accessToken: string) {
+  constructor() {
     this.client = createClient(supabaseUrl, supabaseKey);
   }
 
