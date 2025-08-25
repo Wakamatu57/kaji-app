@@ -86,7 +86,7 @@ export default function Sidebar() {
           <div className="flex-1" /> {/* 下まで伸ばす用 */}
           <button
             onClick={handleLogout}
-            className="bg-red-500 hover:bg-red-700 px-4 py-2 rounded mt-auto text-white"
+            className="bg-red-500 hover:bg-red-700 px-4 py-2 rounded mt-auto text-white mb-12 md:mb-0"
           >
             ログアウト
           </button>
