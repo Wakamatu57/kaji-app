@@ -83,10 +83,9 @@ export default function Sidebar() {
           >
             ダッシュボード
           </Link>
-          <div className="flex-1" /> {/* 下まで伸ばす用 */}
           <button
             onClick={handleLogout}
-            className="bg-red-500 hover:bg-red-700 px-4 py-2 rounded mt-auto text-white mb-24 md:mb-0"
+            className="bg-red-500 hover:bg-red-700 px-4 py-2 rounded text-white"
           >
             ログアウト
           </button>
